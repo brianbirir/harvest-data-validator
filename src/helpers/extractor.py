@@ -119,7 +119,6 @@ def get_measurements_data(raw_data: dict) -> list:
 
     Returns
     -------
-    list
         harvest measurements
     """
     return raw_data["harvest_measurements"]

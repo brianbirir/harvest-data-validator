@@ -41,12 +41,12 @@ class Validator:
         filtered_measurement_data = []
         df = pd.DataFrame(measurement_data)
         df_grouped = df.groupby(["farm_id", "crop"], as_index=False).size()
-        multiple_occurance = df_grouped.loc[df_grouped["size"] > 1]
-        mutiple_measurement_instances = multiple_occurance.to_dict("records")
+        multiple_occurrance = df_grouped.loc[df_grouped["size"] > 1]
+        multiple_measurement_instances = multiple_occurrance.to_dict("records")
 
-        for i in range(len(mutiple_measurement_instances)):
+        for i in range(len(multiple_measurement_instances)):
             filtered_df = df[
-                df["farm_id"] == mutiple_measurement_instances[i]["farm_id"]
+                df["farm_id"] == multiple_measurement_instances[i]["farm_id"]
             ]
             filtered_measurement_data += filtered_df.to_dict("records")
 

@@ -5,17 +5,18 @@ import src.helpers.violation_rules as rules
 
 
 class Validator:
-    def __init__(self, data=""):
+    def __init__(self, data="", image=""):
         self._data = data
+        self._image = image
 
-    def get_measurement_data(self):
+    def _get_measurement_data(self):
         return self._data
 
-    def set_measurement_data(self, data):
+    def _set_measurement_data(self, data):
         self._data = data
 
     @staticmethod
-    def response_output(processed_data: list, violation_rule: str) -> dict:
+    def _response_output(processed_data: list, violation_rule: str) -> dict:
         """Formats response for validator
 
         Returns
@@ -24,14 +25,14 @@ class Validator:
         """
         return {"violation_rule": violation_rule, "data": processed_data}
 
-    def multiple_crop_measurements(self) -> list:
+    def multiple_crop_measurements(self) -> dict:
         """Returns multiple measurements with same crop and farm
 
         Returns
         -------
             multiple measurements with same crop and farm
         """
-        measurement_data = self.get_measurement_data()
+        measurement_data = self._get_measurement_data()
         filtered_measurement_data = []
         df = pd.DataFrame(measurement_data)
         df_grouped = df.groupby(["farm_id", "crop"], as_index=False).size()
@@ -44,13 +45,12 @@ class Validator:
             ]
             filtered_measurement_data += filtered_df.to_dict("records")
 
-        Validator.response_output(
+        return Validator._response_output(
             processed_data=filtered_measurement_data,
             violation_rule=rules.MULTIPLE_MEASUREMENTS_VIOLATION,
         )
-        return filtered_measurement_data
 
-    def validate_weight(self) -> list:
+    def validate_weight(self) -> dict:
         """Compares dry and wet weight of crops
 
         Returns
@@ -58,7 +58,7 @@ class Validator:
             crops with dry weight greater than wet weight
         """
         updated_measurement_data = []
-        measurement_data = self.get_measurement_data()
+        measurement_data = self._get_measurement_data()
 
         for i in range(len(measurement_data)):
             current_wet_weight = measurement_data[i]["wet_weight"]
@@ -72,9 +72,13 @@ class Validator:
 
             if bool(temp_measurement):
                 updated_measurement_data.append(temp_measurement)
-        return updated_measurement_data
 
-    def validate_dry_weight(self) -> list:
+        return Validator._response_output(
+            processed_data=updated_measurement_data,
+            violation_rule=rules.DRY_WEIGHT_VIOLATION,
+        )
+
+    def validate_dry_weight(self) -> dict:
         """Validate dry weight via standard deviation
 
         Returns
@@ -83,7 +87,7 @@ class Validator:
 
         """
         updated_measurement_data = []
-        measurement_data = self.get_measurement_data()
+        measurement_data = self._get_measurement_data()
         dry_weight_list = [
             measurement_data[i]["dry_weight"] for i in range(len(measurement_data))
         ]
@@ -103,7 +107,10 @@ class Validator:
 
             if bool(temporary_measurement):
                 updated_measurement_data.append(temporary_measurement)
-        return updated_measurement_data
+        return Validator._response_output(
+            processed_data=updated_measurement_data,
+            violation_rule=rules.DRY_WEIGHT_OUTLIER_VIOLATION,
+        )
 
     def validate_farm_distance(self):
         pass

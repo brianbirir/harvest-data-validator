@@ -30,6 +30,6 @@ def validate_harvest(folder):
 
             validator_obj = Validator(data=harvest_data)
 
-            pprint.pprint(validator_obj.multiple_crop_measurements())
-            pprint.pprint(validator_obj.validate_dry_weight())
-            pprint.pprint(validator_obj.validate_weight())
+            print(validator_obj.multiple_crop_measurements())
+            print(validator_obj.validate_dry_weight())
+            print(validator_obj.validate_weight())

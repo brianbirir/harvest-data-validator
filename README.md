@@ -21,8 +21,11 @@ A command line tool used to validate crop harvest data and return data points th
 * Use the new Docker image to run an interactive container to process the data:
 
 ```bash
-docker run -it harvest_validator python run.py --folder=./data
+docker run -v /path/to/harvest/data:/app/data -it harvest_validator python run.py --folder=./data
+
 ```
+
+For the `docker run -v` flag this involves mounting the data folder source on the host machine to the `/app/data` folder in the Docker container.
 
 The above command will provide data in the following format per the specified check:
 

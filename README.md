@@ -77,7 +77,7 @@ For example, to check where the dry weight measurement exceeds the corresponding
 * Run the following command to process and validate the harvest data:
 
 ```bash
-python run.py --folder=./data
+python run.py --folder=/path/to/harvest/data
 ```
 
 

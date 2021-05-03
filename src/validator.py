@@ -1,3 +1,5 @@
+import json
+
 import numpy
 import pandas as pd
 
@@ -21,8 +23,11 @@ class Validator:
 
         Returns
         -------
-            validator response json string
+            validator response dict
         """
+
+        if not processed_data and not violation_rule:
+            raise Exception("Please provide processed data and violation rule")
         return {"violation_rule": violation_rule, "data": processed_data}
 
     def multiple_crop_measurements(self) -> dict:

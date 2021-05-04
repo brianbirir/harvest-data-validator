@@ -1,18 +1,7 @@
-import pprint
-
 import click
 
 from src.validator import Validator
 from src.helpers.extractor import fetch_files, read_data_file, get_measurements_data
-
-
-@click.command()
-@click.option("--count", default=1, help="Number of greetings.")
-@click.option("--name", prompt="Your name", help="The person to greet.")
-def hello(count, name):
-    """Simple program that greets NAME for a total of COUNT times."""
-    for x in range(count):
-        click.echo("Hello %s!" % name)
 
 
 @click.command()
